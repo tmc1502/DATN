@@ -1,33 +1,35 @@
 #include <Arduino.h>
 
-#define trigPin1 13 // Chân Trig cho cảm biến 1
-#define echoPin1 12 // Chân Echo cho cảm biến 1
-#define trigPin2 11 // Chân Trig cho cảm biến 2
-#define echoPin2 10 // Chân Echo cho cảm biến 2
+#define trigPin1 13
+#define echoPin1 12
 
-#define ledPin1 2 // Chân điều khiển LED 1
-#define ledPin2 3 // Chân điều khiển LED 2
+#define trigPin2 11
+#define echoPin2 10
 
-#define ledPin3 4 // Chân điều khiển LED 1
-#define ledPin4 5 // Chân điều khiển LED 2
+#define ledPin1 2
+#define ledPin2 3
+
+#define ledPin3 4
+#define ledPin4 5
 
 void setup()
 {
-  Serial.begin(9600); // Khởi động cổng Serial
+  Serial.begin(9600);
   pinMode(trigPin1, OUTPUT);
   pinMode(echoPin1, INPUT);
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
-  pinMode(ledPin1, OUTPUT); // LED 1 là OUTPUT
-  pinMode(ledPin2, OUTPUT); // LED 2 là OUTPUT
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  pinMode(ledPin4, OUTPUT);
 }
 
 void loop()
 {
-  long duration1, distance1; // Biến lưu trữ thời gian và khoảng cách cho cảm biến 1
-  long duration2, distance2; // Biến lưu trữ thời gian và khoảng cách cho cảm biến 2
+  long duration1, distance1;
+  long duration2, distance2;
 
-  // Đo khoảng cách từ cảm biến 1
   digitalWrite(trigPin1, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin1, HIGH);
@@ -36,7 +38,6 @@ void loop()
   duration1 = pulseIn(echoPin1, HIGH);
   distance1 = duration1 * 0.034 / 2;
 
-  // Đo khoảng cách từ cảm biến 2
   digitalWrite(trigPin2, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin2, HIGH);
@@ -45,7 +46,6 @@ void loop()
   duration2 = pulseIn(echoPin2, HIGH);
   distance2 = duration2 * 0.034 / 2;
 
-  // In ra Serial Monitor
   Serial.print("Distance 1: ");
   Serial.print(distance1);
   Serial.println(" cm");
@@ -53,38 +53,37 @@ void loop()
   Serial.print(distance2);
   Serial.println(" cm");
 
-  // Kiểm tra điều kiện và bật đèn LED tương ứng
   if (distance1 < 30 && distance2 < 30)
   {
-    digitalWrite(ledPin1, HIGH); // Bật LED 1
-    digitalWrite(ledPin2, LOW);  // Tắt LED 2
+    digitalWrite(ledPin1, HIGH);
+    digitalWrite(ledPin2, LOW);
   }
   else if (distance1 >= 30 && distance2 >= 30)
   {
-    digitalWrite(ledPin1, LOW);  // Tắt LED 1
-    digitalWrite(ledPin2, HIGH); // Bật LED 2
+    digitalWrite(ledPin1, LOW);
+    digitalWrite(ledPin2, HIGH);
   }
   else
   {
-    digitalWrite(ledPin1, LOW); // Tắt LED 1
-    digitalWrite(ledPin2, LOW); // Tắt LED 2
+    digitalWrite(ledPin1, LOW);
+    digitalWrite(ledPin2, LOW);
   }
 
   if (distance2 < 30 && distance2 < 30)
   {
-    digitalWrite(ledPin3, HIGH); // Bật LED 1
-    digitalWrite(ledPin4, LOW);  // Tắt LED 2
+    digitalWrite(ledPin3, HIGH);
+    digitalWrite(ledPin4, LOW);
   }
   else if (distance2 >= 30 && distance2 >= 30)
   {
-    digitalWrite(ledPin3, LOW);  // Tắt LED 1
+    digitalWrite(ledPin3, LOW);
     digitalWrite(ledPin4, HIGH); // Bật LED 2
   }
   else
   {
-    digitalWrite(ledPin3, LOW); // Tắt LED 1
-    digitalWrite(ledPin4, LOW); // Tắt LED 2
+    digitalWrite(ledPin3, LOW);
+    digitalWrite(ledPin4, LOW);
   }
 
-  delay(100); // Chờ 0.1 giây trước khi lặp lại
+  delay(100);
 }
